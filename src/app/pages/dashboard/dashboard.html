@@ -1,0 +1,73 @@
+<div class="dash">
+  @if (user()) {
+    <h1 class="title">Dashboard</h1>
+    <p class="sub">Bienvenue sur Lab Booking</p>
+
+    <div class="banner">
+      <h2>Bonjour, {{ user().name }} 👋</h2>
+      <p>Voici ce qui se passe sur votre plateforme aujourd'hui.</p>
+      <span class="role">{{ user().role }}</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="icon blue">📅</div>
+        <div>
+          <span class="num">0</span>
+          <span class="label">Mes réservations actives</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="icon green">🔬</div>
+        <div>
+          <span class="num">--</span>
+          <span class="label">Équipements disponibles</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="icon orange">👥</div>
+        <div>
+          <span class="num">{{ user().role === 'admin' ? users().length : '-' }}</span>
+          <span class="label">Utilisateurs</span>
+        </div>
+      </div>
+    </div>
+
+    @if (user().role === 'admin') {
+      <div class="panel">
+        <h2>Gestion des utilisateurs</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Nom</th><th>Email</th><th>Rôle</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              @for (u of users(); track u.id) {
+                <tr>
+                  <td>{{ u.id }}</td>
+                  <td>{{ u.name }}</td>
+                  <td>{{ u.email }}</td>
+                  <td><span class="badge">{{ u.role }}</span></td>
+                  <td class="actions">
+                    @if (u.id !== user().id) {
+                      <button class="small" (click)="changeRole(u)">
+                        {{ u.role === 'admin' ? 'Rendre student' : 'Rendre admin' }}
+                      </button>
+                      <button class="small danger" (click)="remove(u)">Supprimer</button>
+                    } @else {
+                      <span class="badge">Vous</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+</div>

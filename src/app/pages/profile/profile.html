@@ -1,0 +1,15 @@
+<div class="box">
+  <h2>Mon profil</h2>
+
+  @if (user()) {
+    <p><b>Nom :</b> {{ user().name }}</p>
+    <p><b>Email :</b> {{ user().email }}</p>
+    <p><b>Rôle :</b> {{ user().role }}</p>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <button (click)="logout()">Se déconnecter</button>
+</div>

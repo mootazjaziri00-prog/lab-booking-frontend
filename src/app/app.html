@@ -1,0 +1,46 @@
+@if (loader.loading()) {
+  <div class="loader-bar"></div>
+}
+
+<div class="toasts">
+  @for (t of toast.toasts(); track t.id) {
+    <div class="toast" [class]="t.type" (click)="toast.remove(t.id)">
+      {{ t.type === 'success' ? '✅' : t.type === 'error' ? '❌' : 'ℹ️' }}
+      {{ t.message }}
+    </div>
+  }
+</div>
+
+<button class="theme-btn" (click)="theme.toggle()" title="Changer le thème">
+  {{ theme.theme() === 'light' ? '🌙' : '☀️' }}
+</button>
+
+@if (auth.isLoggedIn()) {
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">L</span>
+        <span class="brand-name">Lab Booking</span>
+      </div>
+
+      <p class="menu-title">MENU</p>
+      <nav class="menu">
+        <a routerLink="/dashboard" routerLinkActive="active">📊 Dashboard</a>
+        <a routerLink="/profile" routerLinkActive="active">👤 Profil</a>
+        <a routerLink="/equipment" routerLinkActive="active">🔬 Équipements</a>
+        @if (auth.isAdmin()) {
+  <a routerLink="/admin" routerLinkActive="active">👑 Administration</a>
+  <a routerLink="/reservations" routerLinkActive="active">📅 Mes réservations</a>
+}
+      </nav>
+
+      <a href="#" class="logout" (click)="logout($event)">🚪 Déconnexion</a>
+    </aside>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+} @else {
+  <router-outlet />
+}

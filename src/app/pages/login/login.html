@@ -1,0 +1,43 @@
+<div class="auth-page">
+  <div class="auth-side">
+    <div class="side-content">
+      <span class="logo">🔬</span>
+      <h1>Lab Booking</h1>
+      <p>Réservez caméras, imprimantes 3D et kits de laboratoire en quelques clics.</p>
+      <ul>
+        <li>✔ Disponibilité en temps réel</li>
+        <li>✔ Aucune double réservation</li>
+        <li>✔ Gestion simple de vos réservations</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-form">
+    <div class="form-card">
+      <h2>Bon retour 👋</h2>
+      <p class="hint">Connectez-vous à votre compte</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="exemple@mail.com" />
+        @if (form.controls.email.touched && form.controls.email.dirty && form.controls.email.invalid) {
+          <small>Email invalide</small>
+        }
+
+        <label>Mot de passe</label>
+        <div class="pwd">
+          <input [type]="showPwd() ? 'text' : 'password'" formControlName="password" placeholder="••••••" />
+          <span class="eye" (click)="showPwd.set(!showPwd())">{{ showPwd() ? '🙈' : '👁️' }}</span>
+        </div>
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <small>Minimum 6 caractères</small>
+        }
+
+        <button type="submit" [disabled]="form.invalid">Se connecter</button>
+      </form>
+
+      <p class="bottom">Pas de compte ? <a routerLink="/register">S'inscrire</a></p>
+      <p class="bottom"><a routerLink="/">← Retour à l'accueil</a></p>
+    </div>
+  </div>
+</div>

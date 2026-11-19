@@ -1,0 +1,43 @@
+<div class="auth-page">
+  <div class="auth-side">
+    <div class="side-content">
+      <span class="logo">🔬</span>
+      <h1>Lab Booking</h1>
+      <p>Créez votre compte et réservez le matériel du laboratoire en quelques clics.</p>
+      <ul>
+        <li>✔ Inscription rapide</li>
+        <li>✔ Aucune double réservation</li>
+        <li>✔ Suivi de vos réservations</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-form">
+    <div class="form-card">
+      <h2>Créer un compte ✨</h2>
+      <p class="hint">Rejoignez la plateforme</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>Nom</label>
+        <input type="text" formControlName="name" placeholder="Votre nom" />
+
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="exemple@mail.com" />
+        @if (form.controls.email.touched && form.controls.email.dirty && form.controls.email.invalid) {
+          <small>Email invalide</small>
+        }
+
+        <label>Mot de passe</label>
+        <input type="password" formControlName="password" placeholder="Minimum 6 caractères" />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <small>Minimum 6 caractères</small>
+        }
+
+        <button type="submit" [disabled]="form.invalid">S'inscrire</button>
+      </form>
+
+      <p class="bottom">Déjà un compte ? <a routerLink="/login">Se connecter</a></p>
+      <p class="bottom"><a routerLink="/">← Retour à l'accueil</a></p>
+    </div>
+  </div>
+</div>

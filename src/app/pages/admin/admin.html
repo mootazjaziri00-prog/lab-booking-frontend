@@ -1,0 +1,72 @@
+<div class="page">
+  <h1>Administration 👑</h1>
+  <p class="sub">Vue d'ensemble de la plateforme</p>
+
+  @if (stats()) {
+    <div class="stats">
+      <div class="stat">
+        <div class="icon blue">👥</div>
+        <div><span class="num">{{ stats().users.total }}</span><span class="label">Utilisateurs</span></div>
+      </div>
+      <div class="stat">
+        <div class="icon purple">🛡️</div>
+        <div><span class="num">{{ stats().users.admins }}</span><span class="label">Administrateurs</span></div>
+      </div>
+      <div class="stat">
+        <div class="icon orange">🎓</div>
+        <div><span class="num">{{ stats().users.students }}</span><span class="label">Étudiants</span></div>
+      </div>
+      <div class="stat">
+        <div class="icon green">🔬</div>
+        <div><span class="num">{{ stats().equipment.total }}</span><span class="label">Équipements</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="panel">
+        <h2>Équipements par catégorie</h2>
+        @for (c of stats().byCategory; track c.category) {
+          <div class="bar-row">
+            <span class="bar-label">{{ labels[c.category] || c.category }}</span>
+            <div class="bar-bg"><div class="bar" [style.width.%]="percent(c.count)"></div></div>
+            <b>{{ c.count }}</b>
+          </div>
+        }
+      </div>
+
+      <div class="panel">
+        <h2>Disponibilité</h2>
+        <div class="gauge">
+          <div class="gauge-fill" [style.width.%]="availablePercent()"></div>
+        </div>
+        <p class="gauge-text">{{ availablePercent() }}% disponibles</p>
+        <p><span class="dot ok"></span> Disponibles : <b>{{ stats().equipment.available }}</b></p>
+        <p><span class="dot busy"></span> Réservés : <b>{{ stats().equipment.busy }}</b></p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Derniers inscrits</h2>
+        <a routerLink="/dashboard">Gérer les utilisateurs →</a>
+      </div>
+      <table>
+        <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Inscription</th></tr></thead>
+        <tbody>
+          @for (u of stats().recentUsers; track u.id) {
+            <tr>
+              <td>{{ u.name }}</td>
+              <td>{{ u.email }}</td>
+              <td><span class="badge">{{ u.role }}</span></td>
+              <td>{{ u.created_at.slice(0, 10) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+</div>

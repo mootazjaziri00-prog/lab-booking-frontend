@@ -1,0 +1,123 @@
+<div class="page">
+  <h1>Équipements</h1>
+  <p class="sub">{{ total() }} équipement(s) trouvé(s)</p>
+
+  <div class="wrap">
+    <aside class="filters">
+      <div class="filters-head">
+        <b>Filtres</b>
+        <a href="#" (click)="$event.preventDefault(); reset()">Réinitialiser</a>
+      </div>
+
+      <h4>Catégorie</h4>
+      @for (c of filters().categories; track c.value) {
+        <label class="check">
+          <input type="checkbox" [checked]="has(category, c.value)" (change)="toggle(category, c.value)" />
+          {{ categoryLabels[c.value] || c.value }} <span class="count">({{ c.count }})</span>
+        </label>
+      }
+
+      <h4>Marque</h4>
+      @for (b of filters().brands; track b.value) {
+        <label class="check">
+          <input type="checkbox" [checked]="has(brand, b.value)" (change)="toggle(brand, b.value)" />
+          {{ b.value }} <span class="count">({{ b.count }})</span>
+        </label>
+      }
+
+      <h4>Lieu</h4>
+      @for (l of filters().locations; track l.value) {
+        <label class="check">
+          <input type="checkbox" [checked]="has(location, l.value)" (change)="toggle(location, l.value)" />
+          {{ l.value }} <span class="count">({{ l.count }})</span>
+        </label>
+      }
+
+      <h4>Disponibilité</h4>
+      <select (change)="setAvailable($any($event.target).value)" [value]="available">
+        <option value="">Tous</option>
+        <option value="1">Disponible</option>
+        <option value="0">Réservé</option>
+      </select>
+    </aside>
+
+    <section class="main">
+      <div class="toolbar">
+        <input
+          class="search"
+          type="text"
+          placeholder="🔍 Rechercher (nom, marque, lieu...)"
+          [value]="search"
+          (input)="onSearch($any($event.target).value)"
+        />
+        <select (change)="onSort($any($event.target).value)">
+          <option value="id-asc">Plus anciens</option>
+          <option value="id-desc">Plus récents</option>
+          <option value="name-asc">Nom A → Z</option>
+          <option value="name-desc">Nom Z → A</option>
+          <option value="brand-asc">Marque A → Z</option>
+        </select>
+      </div>
+
+      @if (items().length === 0) {
+        <div class="empty">Aucun équipement ne correspond à votre recherche 😕</div>
+      }
+
+      <div class="grid">
+        @for (e of items(); track e.id) {
+          <div class="card">
+            <div class="thumb">
+              {{ e.category === 'camera' ? '📷' : e.category === 'printer3d' ? '🖨️' : e.category === 'labkit' ? '🔬' : '💻' }}
+            </div>
+            <div class="info">
+              <h3>{{ e.name }}</h3>
+              <p class="desc">{{ e.description }}</p>
+              <p class="meta">{{ e.brand }} · {{ e.location }}</p>
+              <span class="status" [class.busy]="!e.available">
+                {{ e.available ? 'Disponible' : 'Réservé' }}
+              </span>
+              <button class="reserve" (click)="openBooking(e)">Réserver</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button (click)="goTo(page - 1)" [disabled]="page === 1">‹</button>
+          @for (p of pages(); track p) {
+            <button [class.active]="p === page" (click)="goTo(p)">{{ p }}</button>
+          }
+          <button (click)="goTo(page + 1)" [disabled]="page === totalPages()">›</button>
+        </div>
+      }
+    </section>
+  </div>
+</div>
+@if (selected()) {
+  <div class="modal-bg" (click)="closeBooking()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>Réserver : {{ selected().name }}</h2>
+
+      <label>Date de début</label>
+      <input type="date" [min]="today" [value]="startDate" (input)="startDate = $any($event.target).value" />
+
+      <label>Date de fin</label>
+      <input type="date" [min]="startDate || today" [value]="endDate" (input)="endDate = $any($event.target).value" />
+
+      @if (booked().length) {
+        <div class="booked">
+          <b>Déjà réservé :</b>
+          @for (b of booked(); track b.id) {
+            <p>📅 {{ b.start_date.slice(0, 10) }} → {{ b.end_date.slice(0, 10) }}</p>
+          }
+        </div>
+      }
+
+      <div class="modal-actions">
+        <button class="cancel" (click)="closeBooking()">Annuler</button>
+        <button (click)="confirmBooking()">Confirmer</button>
+      </div>
+    </div>
+  </div>
+}
