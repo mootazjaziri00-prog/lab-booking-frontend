@@ -13,14 +13,14 @@
       <div class="stat">
         <div class="icon blue">📅</div>
         <div>
-          <span class="num">0</span>
+          <span class="num">{{ activeCount() }}</span>
           <span class="label">Mes réservations actives</span>
         </div>
       </div>
       <div class="stat">
         <div class="icon green">🔬</div>
         <div>
-          <span class="num">--</span>
+          <span class="num">{{ availableCount() }}</span>
           <span class="label">Équipements disponibles</span>
         </div>
       </div>
@@ -32,6 +32,54 @@
         </div>
       </div>
     </div>
+
+    <div class="panel" style="margin-bottom: 20px">
+      <div class="panel-head">
+        <h2>Mes prochaines réservations</h2>
+        <a routerLink="/reservations">Voir tout →</a>
+      </div>
+      @if (upcoming().length === 0) {
+        <p class="muted">Aucune réservation active. <a routerLink="/equipment">Réserver un équipement</a></p>
+      }
+      @for (r of upcoming(); track r.id) {
+    @if (user().role === 'admin') {
+      <div class="panel">
+        <h2>Gestion des utilisateurs</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Nom</th><th>Email</th><th>Rôle</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+              @for (u of users(); track u.id) {
+                <tr>
+                  <td>{{ u.id }}</td>
+                  <td>{{ u.name }}</td>
+                  <td>{{ u.email }}</td>
+                  <td><span class="badge">{{ u.role }}</span></td>
+                  <td class="actions">
+                    @if (u.id !== user().id) {
+                      <button class="small" (click)="changeRole(u)">
+                        {{ u.role === 'admin' ? 'Rendre student' : 'Rendre admin' }}
+                      </button>
+                      <button class="small danger" (click)="remove(u)">Supprimer</button>
+                    } @else {
+                      <span class="badge">Vous</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+</div>
 
     @if (user().role === 'admin') {
       <div class="panel">

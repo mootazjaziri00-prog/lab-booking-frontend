@@ -9,6 +9,9 @@ import { authGuard } from './guards/auth-guard';
 import { Admin } from './pages/admin/admin';
 import { adminGuard } from './guards/admin-guard';
 import { Reservations } from './pages/reservations/reservations';
+import { Calendar } from './pages/calendar/calendar';
+
+
 
 
 
@@ -21,5 +24,6 @@ export const routes: Routes = [
   { path: 'equipment', component: Equipment, canActivate: [authGuard] },
   { path: 'admin', component: Admin, canActivate: [authGuard, adminGuard] },
   { path: 'reservations', component: Reservations, canActivate: [authGuard] },
+  { path: 'calendar', component: Calendar, canActivate: [authGuard] },
 
 ];

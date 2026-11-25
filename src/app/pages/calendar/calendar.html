@@ -1,0 +1,40 @@
+<div class="page">
+  <h1>Calendrier 📅</h1>
+  <p class="sub">Disponibilité d'un équipement jour par jour</p>
+
+  <div class="bar">
+    <select (change)="onSelect($any($event.target).value)">
+      @for (e of equipment(); track e.id) {
+        <option [value]="e.id">{{ e.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="cal">
+    <div class="cal-head">
+      <button (click)="prev()">‹</button>
+      <h2>{{ months[month() - 1] }} {{ year() }}</h2>
+      <button (click)="next()">›</button>
+    </div>
+
+    <div class="grid">
+      @for (w of weekdays; track w) {
+        <div class="wd">{{ w }}</div>
+      }
+      @for (d of cells(); track $index) {
+        @if (d === null) {
+          <div class="cell empty"></div>
+        } @else {
+          <div class="cell" [class.booked]="isBooked(d)" [class.today]="isToday(d)">
+            {{ d }}
+          </div>
+        }
+      }
+    </div>
+
+    <div class="legend">
+      <span><i class="dot free"></i> Disponible</span>
+      <span><i class="dot busy"></i> Réservé</span>
+    </div>
+  </div>
+</div>

@@ -22,4 +22,9 @@ export class ReservationService {
   cancel(id: number) {
     return this.http.put<any>(`${this.api}/${id}/cancel`, {});
   }
+  calendar(equipmentId: number, year: number, month: number) {
+  return this.http.get<any[]>(
+    `${this.api}/calendar/${equipmentId}?year=${year}&month=${month}`
+  );
+}
 }

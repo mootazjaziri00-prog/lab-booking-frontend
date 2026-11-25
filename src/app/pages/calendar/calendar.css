@@ -1,0 +1,21 @@
+.page { padding: 28px 32px; max-width: 760px; }
+h1 { margin: 0; color: var(--heading); }
+.sub { color: var(--muted); margin: 4px 0 18px; }
+.bar select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 15px; }
+
+.cal { background: var(--card); padding: 22px; border-radius: 16px; box-shadow: 0 4px 14px rgba(0,0,0,.06); margin-top: 16px; }
+.cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.cal-head h2 { margin: 0; color: var(--heading); }
+.cal-head button { width: 40px; height: 40px; margin: 0; padding: 0; font-size: 20px; }
+
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.wd { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); }
+.cell { aspect-ratio: 1; display: grid; place-items: center; border-radius: 10px; background: #dcfce7; color: #166534; font-weight: 600; }
+.cell.booked { background: #fee2e2; color: #991b1b; }
+.cell.today { outline: 2px solid var(--primary); }
+.cell.empty { background: transparent; }
+
+.legend { display: flex; gap: 18px; margin-top: 16px; font-size: 13px; color: var(--muted); }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 6px; }
+.dot.free { background: #86efac; }
+.dot.busy { background: #fca5a5; }

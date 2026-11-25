@@ -38,4 +38,23 @@ export class EquipmentService {
   filters() {
     return this.http.get<any>(`${this.api}/filters`);
   }
+  get(id: number) {
+  return this.http.get<any>(`${this.api}/${id}`);
+}
+
+create(data: FormData) {
+  return this.http.post<any>(this.api, data);
+}
+
+update(id: number, data: FormData) {
+  return this.http.put<any>(`${this.api}/${id}`, data);
+}
+
+remove(id: number) {
+  return this.http.delete<any>(`${this.api}/${id}`);
+}
+
+imageUrl(name: string) {
+  return `http://localhost:3000/uploads/${name}`;
+}
 }
